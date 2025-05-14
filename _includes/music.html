@@ -1,0 +1,53 @@
+<div id="audio-guide" style="position:fixed; bottom:80px; right:20px; background:#fff; padding:10px; border-radius:8px; box-shadow:0 2px 5px rgba(0,0,0,0.2);">
+ 点击任意位置启用背景音乐
+ <button onclick="this.parentElement.remove()" style="margin-left:10px;">×</button>
+</div>
+
+<!-- 隐藏播放器本体 -->
+<audio id="bgm" controls autoplay loop style="display:none;">
+  <source src="/assets/music/daoxiang.mp3" type="audio/mpeg">
+  您的浏览器不支持音频播放
+</audio>
+
+<!-- 悬浮控制按钮 -->
+<div id="music-control" class="music-btn">♪</div>
+
+<style>
+.music-btn {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  z-index: 999;
+  cursor: pointer;
+  background: rgba(255,255,255,0.8);
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 40px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+  transition: transform 0.3s;
+}
+.music-btn:hover {
+  transform: scale(1.1);
+}
+</style>
+
+<script>
+// 自动播放兼容处理（解决iOS限制）
+document.addEventListener('DOMContentLoaded', function() {
+  const audio = document.getElementById('bgm');
+  
+  // 首次交互后自动播放
+  document.body.addEventListener('click', function initAudio() {
+    audio.play().catch(_ => {});
+    document.body.removeEventListener('click', initAudio);
+  });
+
+  // 控制按钮交互
+  document.getElementById('music-control').addEventListener('click', function() {
+    audio.paused ? audio.play() : audio.pause();
+    this.textContent = audio.paused ? '♪' : '♫';
+  });
+});
+</script>
