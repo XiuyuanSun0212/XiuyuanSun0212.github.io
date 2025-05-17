@@ -93,4 +93,22 @@ audio.addEventListener('pause', () => {
 document.addEventListener('click', () => {
   audio.play().catch(_ => {});
 }, { once: true });
+
+// 播放器初始化时读取状态
+const audio = document.getElementById('bgm');
+audio.currentTime = localStorage.getItem('musicTime') || 0;
+audio.volume = localStorage.getItem('musicVolume') || 0.5;
+
+// 页面关闭前保存状态
+window.addEventListener('beforeunload', () => {
+  localStorage.setItem('musicTime', audio.currentTime);
+  localStorage.setItem('musicVolume', audio.volume);
+});
+
+// 监听页面可见性变化（切换标签页时保存）
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'hidden') {
+    localStorage.setItem('musicTime', audio.currentTime);
+  }
+});
 </script>
